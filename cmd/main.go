@@ -1,15 +1,18 @@
 package main
 
 import (
-	"net/http"
-
+	"github.com/bhanna1693/gameoflife/handlers/hello"
+	"github.com/bhanna1693/gameoflife/handlers/home"
 	"github.com/labstack/echo/v4"
 )
 
 func main() {
 	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
+	e.GET("/", func(e echo.Context) error {
+		return home.HandleHome(e)
 	})
-	e.Logger.Fatal(e.Start(":1323"))
+	e.GET("/hello", func(e echo.Context) error {
+		return hello.HandleHello(e)
+	})
+	e.Logger.Fatal(e.Start(":80"))
 }

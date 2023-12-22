@@ -1,0 +1,11 @@
+package layout
+
+import "github.com/bhanna1693/gameoflife/components/index"
+
+templ Base() {
+    @index.Index() {
+        <div class="container">
+            {children...}
+        </div>
+    }
+}
