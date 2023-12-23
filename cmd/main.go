@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/bhanna1693/gameoflife/handlers/gameoflife"
 	"github.com/bhanna1693/gameoflife/handlers/hello"
 	"github.com/bhanna1693/gameoflife/handlers/home"
 	"github.com/labstack/echo/v4"
@@ -14,6 +15,9 @@ func main() {
 	})
 	e.GET("/hello", func(e echo.Context) error {
 		return hello.HandleHello(e)
+	})
+	e.GET("/gameoflife", func(e echo.Context) error {
+		return gameoflife.HandleGameOfLife(e)
 	})
 	e.Logger.Fatal(e.Start(":80"))
 }
