@@ -1,2 +1,3 @@
+components/**/*_templ.go
 .env
 tailwindcss

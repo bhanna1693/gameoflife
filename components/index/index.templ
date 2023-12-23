@@ -2,15 +2,24 @@ package index
 
 import "github.com/bhanna1693/gameoflife/components/nav"
 
+var styles = []string{
+	"/static/styles/tailwind.css",
+}
+
 templ Index() {
-    <html class="dark">
-        <head>
-            <title>Index</title>
-            <link rel="stylesheet" href="/static/styles/tailwind.css" />
-        </head>
-        <body class="bg-white text-black dark:bg-black dark:text-white">
-            @nav.Nav()
-            {children...}
-        </body>
-    </html>
+	<html>
+		<head>
+			<title>Index</title>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			for _, style := range styles {
+				<link rel="stylesheet" href={ style }/>
+			}
+			<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+		</head>
+		<body class="prose dark:prose-invert">
+			@nav.Nav()
+			{ children... }
+		</body>
+	</html>
 }

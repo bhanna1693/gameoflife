@@ -1,10 +1,49 @@
 package nav
 
+script toggleTheme() {
+  // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+  const currentTheme = localStorage.theme 
+    ? localStorage.theme 
+    : window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark" : null;
+  if (currentTheme !== "dark") {
+    document.documentElement.classList.add("dark")
+      // Whenever the user explicitly chooses dark mode
+    localStorage.theme = "dark"
+  } else {
+    document.documentElement.classList.remove("dark")
+      // Whenever the user explicitly chooses light mode
+    localStorage.theme = "light"
+  }
+}
+
+script setTheme() {
+  if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    document.documentElement.classList.add("dark")
+  } else {
+    document.documentElement.classList.remove("dark")
+  }
+}
+
+templ toggleBtn() {
+	<button
+		id="switch-toggle"
+		class="btn btn-primary"
+		onclick={ toggleTheme() }
+	>
+		Toggle Theme
+	</button>
+	@setTheme()
+}
+
 templ Nav() {
-    <div class="nav">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/hello">About</a></li>
-        </ul>
-    </div>
+	<div class="nav">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/hello">Hello</a></li>
+			<li>
+				@toggleBtn()
+			</li>
+		</ul>
+	</div>
 }
