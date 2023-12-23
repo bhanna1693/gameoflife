@@ -28,7 +28,7 @@ script setTheme() {
 templ toggleBtn() {
 	<button
 		id="switch-toggle"
-		class="btn btn-primary"
+		class=""
 		onclick={ toggleTheme() }
 	>
 		Toggle Theme
@@ -37,13 +37,11 @@ templ toggleBtn() {
 }
 
 templ Nav() {
-	<div class="nav">
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/hello">Hello</a></li>
-			<li>
-				@toggleBtn()
-			</li>
-		</ul>
-	</div>
+	<nav class="flex">
+		<div class="mr-6 p-3"><a class="" href="/">Home</a></div>
+		<div class="mr-6 p-3"><a class="" href="/hello">Hello</a></div>
+		<div class="ml-auto p-3">
+			@toggleBtn()
+		</div>
+	</nav>
 }
