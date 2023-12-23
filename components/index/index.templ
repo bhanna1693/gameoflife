@@ -3,11 +3,12 @@ package index
 import "github.com/bhanna1693/gameoflife/components/nav"
 
 templ Index() {
-    <html>
+    <html class="dark">
         <head>
             <title>Index</title>
+            <link rel="stylesheet" href="/static/styles/tailwind.css" />
         </head>
-        <body>
+        <body class="bg-white text-black dark:bg-black dark:text-white">
             @nav.Nav()
             {children...}
         </body>

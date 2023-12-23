@@ -8,6 +8,7 @@ import (
 
 func main() {
 	e := echo.New()
+	e.Static("/static", "assets")
 	e.GET("/", func(e echo.Context) error {
 		return home.HandleHome(e)
 	})
