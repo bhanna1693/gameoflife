@@ -37,11 +37,14 @@ templ toggleBtn() {
 }
 
 templ Nav() {
-	<nav class="flex">
+	<nav class="flex w-screen" hx-boost="true" hx-target="#main" hx-select="#main">
 		<div class="mr-6 p-3"><a class="" href="/">Home</a></div>
 		<div class="mr-6 p-3"><a class="" href="/hello">Hello</a></div>
 		<div class="mr-6 p-3"><a class="" href="/gameoflife">GameOfLife</a></div>
 		<div class="ml-auto p-3">
+			<input type="text" class="form-input" placeholder="Search..."/>
+		</div>
+		<div class="p-3">
 			@toggleBtn()
 		</div>
 	</nav>

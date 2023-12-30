@@ -1,0 +1,27 @@
+package gameoflife
+
+import "strconv"
+
+func isChecked(column int) bool {
+	return column > 0
+}
+
+func stringify(value int) string {
+	return strconv.Itoa(value)
+}
+
+templ GameOfLifeCell(value int, rowIndex int, colIndex int) {
+	<div
+		class={ "cell w-8 h-8", templ.KV("bg-yellow-500", isChecked(value)) }
+		x-data={ "{ checked: " + "0" + " }" }
+	>
+		<label for={ "matrix[" + stringify(rowIndex) + "][" + stringify(colIndex) + "]" }>
+			{ stringify(value) }
+		</label>
+		<input
+			type="hidden"
+			name={ "matrix[" + stringify(rowIndex) + "][" + stringify(colIndex) + "]" }
+			value={ stringify(value) }
+		/>
+	</div>
+}
