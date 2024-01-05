@@ -1,0 +1,26 @@
+package gameoflife
+
+import "github.com/bhanna1693/gameoflife/web/templates/layout"
+
+templ GameOfLife() {
+	@layout.Base() {
+		<div id="gameoflife-page">
+			<h1>Welcome to the Game of Life!</h1>
+			<h2>Rules</h2>
+			<ul>
+				<li>Any live cell with fewer than two live neighbours dies, as if by underpopulation.</li>
+				<li>Any live cell with two or three live neighbours lives on to the next generation.</li>
+				<li>Any live cell with more than three live neighbours dies, as if by overpopulation.</li>
+				<li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
+			</ul>
+			<button
+				hx-push-url="true"
+				hx-get="/gameoflife/start"
+				hx-target="#gameoflife-page"
+				hx-swap="outerHTML"
+				hx-select="#gameoflife-page"
+				class="btn btn-primary"
+			>Start</button>
+		</div>
+	}
+}

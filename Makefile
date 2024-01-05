@@ -14,7 +14,7 @@ build-templ:
 
 .PHONY: build-tailwind
 build-tailwind: tailwindcss
-	./tailwindcss -i tailwind.css -o assets/styles/tailwind.css --minify
+	./tailwindcss -i tailwind.css -o web/static/styles/tailwind.css --minify
 
 # see for details -> https://tailwindcss.com/blog/standalone-cli
 TAILWIND_RELEASE = tailwindcss-macos-x64

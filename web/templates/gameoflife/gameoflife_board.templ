@@ -1,0 +1,24 @@
+package gameoflife
+
+import "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
+
+templ GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) {
+	<form
+		id="gameoflife-board"
+		hx-post="/gameoflife/start"
+		hx-select="#gameoflife-board"
+		hx-trigger="every 1ms"
+		hx-swap="outerHTML"
+		class="flex flex-col flex-nowrap"
+	>
+		if dto.Matrix != nil {
+			for rowIndex, row := range dto.Matrix {
+				<div class="flex flex-nowrap">
+					for colIndex, column := range row {
+						@GameOfLifeCell(column, rowIndex, colIndex)
+					}
+				</div>
+			}
+		}
+	</form>
+}

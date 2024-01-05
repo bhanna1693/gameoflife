@@ -1,15 +1,41 @@
 package main
 
 import (
-	"github.com/bhanna1693/gameoflife/handlers/gameoflife"
-	"github.com/bhanna1693/gameoflife/handlers/hello"
-	"github.com/bhanna1693/gameoflife/handlers/home"
+	"database/sql"
+	"fmt"
+	"log"
+
+	"github.com/bhanna1693/gameoflife/config/database"
+	"github.com/bhanna1693/gameoflife/internal/handlers/gameoflife"
+	"github.com/bhanna1693/gameoflife/internal/handlers/hello"
+	"github.com/bhanna1693/gameoflife/internal/handlers/home"
 	"github.com/labstack/echo/v4"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
+	// Open a database connection
+	db, err := sql.Open("sqlite3", "your-database-file.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	// Check if the connection is established
+	err = db.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected to the database")
+
+	err = database.CreateGameOfLifeTable(db)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	e := echo.New()
-	e.Static("/static", "assets")
+	e.Static("/static", "web/static")
 	e.GET("/", func(e echo.Context) error {
 		return home.HandleHome(e)
 	})
