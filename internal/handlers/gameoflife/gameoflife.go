@@ -19,20 +19,18 @@ func HandleGameOfLife(e echo.Context) error {
 }
 
 func HandleGameOfLifeStart(e echo.Context) error {
+	x := 10
+	y := 10
+	matrix := make([][]int, x)
+	for i := range matrix {
+		matrix[i] = make([]int, y)
+		for j := range matrix[i] {
+			matrix[i][j] = randomize()
+		}
+	}
+
 	gameDTO := gameoflifemodel.GameOfLifeDTO{
-		Matrix: [][]int{
-			// your matrix initialization here
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-			{randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize(), randomize()},
-		},
+		Matrix: matrix,
 	}
 	return utils.Render(e, gameoflifecomponents.GameOfLifeStart(gameDTO))
 }

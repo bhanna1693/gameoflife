@@ -6,19 +6,24 @@ templ GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) {
 	<form
 		id="gameoflife-board"
 		hx-post="/gameoflife/start"
-		hx-select="#gameoflife-board"
 		hx-trigger="every 1ms"
+		hx-select="#gameoflife-board-content"
+		hx-target="#gameoflife-board-content"
 		hx-swap="outerHTML"
-		class="flex flex-col flex-nowrap"
 	>
-		if dto.Matrix != nil {
-			for rowIndex, row := range dto.Matrix {
-				<div class="flex flex-nowrap">
-					for colIndex, column := range row {
-						@GameOfLifeCell(column, rowIndex, colIndex)
-					}
-				</div>
+		<div
+			id="gameoflife-board-content"
+			class="flex flex-col flex-nowrap"
+		>
+			if dto.Matrix != nil {
+				for rowIndex, row := range dto.Matrix {
+					<div class="flex flex-nowrap">
+						for colIndex, column := range row {
+							@GameOfLifeCell(column, rowIndex, colIndex)
+						}
+					</div>
+				}
 			}
-		}
+		</div>
 	</form>
 }

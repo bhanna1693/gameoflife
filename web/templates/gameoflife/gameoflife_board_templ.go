@@ -25,7 +25,7 @@ func GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form id=\"gameoflife-board\" hx-post=\"/gameoflife/start\" hx-select=\"#gameoflife-board\" hx-trigger=\"every 1ms\" hx-swap=\"outerHTML\" class=\"flex flex-col flex-nowrap\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form id=\"gameoflife-board\" hx-post=\"/gameoflife/start\" hx-trigger=\"every 1ms\" hx-select=\"#gameoflife-board-content\" hx-target=\"#gameoflife-board-content\" hx-swap=\"outerHTML\"><div id=\"gameoflife-board-content\" class=\"flex flex-col flex-nowrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -47,7 +47,7 @@ func GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) templ.Component {
 				}
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
