@@ -1,23 +1,11 @@
 package database
 
 import (
-	"database/sql"
 	"os"
 	"strconv"
 
 	"github.com/joho/godotenv"
 )
-
-func CreateGameOfLifeTable(db *sql.DB) error {
-	// Create a table
-	_, err := db.Exec(`
-		CREATE TABLE IF NOT EXISTS gameoflife (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			result TEXT NOT NULL
-		)
-	`)
-	return err
-}
 
 type DBConfig struct {
 	Host     string

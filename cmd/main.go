@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/bhanna1693/gameoflife/config/database"
+	gameoflifedb "github.com/bhanna1693/gameoflife/internal/database/gameoflife"
 	"github.com/bhanna1693/gameoflife/internal/handlers/gameoflife"
 	"github.com/bhanna1693/gameoflife/internal/handlers/hello"
 	"github.com/bhanna1693/gameoflife/internal/handlers/home"
@@ -29,7 +29,7 @@ func main() {
 
 	fmt.Println("Connected to the database")
 
-	err = database.CreateGameOfLifeTable(db)
+	err = gameoflifedb.CreateGameOfLifeTable(db)
 	if err != nil {
 		log.Fatal(err)
 	}
