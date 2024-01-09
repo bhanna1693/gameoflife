@@ -51,5 +51,5 @@ func main() {
 	e.POST("/gameoflife/start", func(e echo.Context) error {
 		return gameoflife.HandleGameOfLifeBoard(e)
 	})
-	e.Logger.Fatal(e.Start(":80"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
