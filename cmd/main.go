@@ -7,7 +7,6 @@ import (
 
 	gameoflifedb "github.com/bhanna1693/gameoflife/internal/database/gameoflife"
 	"github.com/bhanna1693/gameoflife/internal/handlers/gameoflife"
-	"github.com/bhanna1693/gameoflife/internal/handlers/hello"
 	"github.com/bhanna1693/gameoflife/internal/handlers/home"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
@@ -38,9 +37,6 @@ func main() {
 	e.Static("/static", "web/static")
 	e.GET("/", func(e echo.Context) error {
 		return home.HandleHome(e)
-	})
-	e.GET("/hello", func(e echo.Context) error {
-		return hello.HandleHello(e)
 	})
 	e.GET("/gameoflife", func(e echo.Context) error {
 		return gameoflife.HandleGameOfLife(e)
