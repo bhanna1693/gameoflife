@@ -11,6 +11,7 @@ func CreateGameOfLifeTable(db *sql.DB) error {
 			columns INTEGER NOT NULL DEFAULT 0,
 			cycles INTEGER NOT NULL DEFAULT 0,
 			matrix TEXT NOT NULL DEFAULT '',
+			success BOOLEAN NOT NULL DEFAULT FALSE,
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 		)

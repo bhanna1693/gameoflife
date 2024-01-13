@@ -1,5 +1,10 @@
 package gameoflife
 
 type GameOfLifeDTO struct {
-	Matrix [][]int `form:"matrix"`
+	Success  bool `form:"success"`
+	Finished bool `form:"finished"`
+	Rows     int  `form:"rows" query:"rows"`
+	Columns  int  `form:"columns" query:"columns"`
+	Cycles   int
+	Matrix   [][]int `form:"matrix"`
 }

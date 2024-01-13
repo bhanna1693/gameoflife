@@ -3,7 +3,7 @@ package home
 import "github.com/bhanna1693/gameoflife/web/templates/layout"
 
 templ Home(name string) {
-	@layout.Base() {
+	@layout.Base("home") {
 		<h1>Hello, { name }!</h1>
 		<div>From HELLO</div>
 	}

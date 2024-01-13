@@ -41,10 +41,10 @@ func main() {
 	e.GET("/gameoflife", func(e echo.Context) error {
 		return gameoflife.HandleGameOfLife(e)
 	})
-	e.GET("/gameoflife/start", func(e echo.Context) error {
-		return gameoflife.HandleGameOfLifeStart(e)
+	e.POST("/gameoflife", func(e echo.Context) error {
+		return gameoflife.HandleGameOfLife(e)
 	})
-	e.POST("/gameoflife/start", func(e echo.Context) error {
+	e.POST("/gameoflife/process-board", func(e echo.Context) error {
 		return gameoflife.HandleGameOfLifeBoard(e)
 	})
 	e.Logger.Fatal(e.Start(":8080"))

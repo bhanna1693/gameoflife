@@ -37,7 +37,7 @@ func GameOfLifeCell(value int, rowIndex int, colIndex int) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{"cell w-8 h-8 text-center", templ.KV("bg-yellow-500", isChecked(value))}
+		var templ_7745c5c3_Var2 = []any{"cell w-8 h-8 text-center border-solid border border-slate-500", templ.KV("bg-slate-500", isChecked(value))}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

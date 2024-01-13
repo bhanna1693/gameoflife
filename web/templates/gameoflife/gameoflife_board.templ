@@ -1,16 +1,19 @@
 package gameoflife
 
 import "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
+import "strconv"
 
 templ GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) {
 	<form
 		id="gameoflife-board"
-		hx-post="/gameoflife/start"
-		hx-trigger="every 1ms"
+		hx-post="/gameoflife/process-board"
+		hx-trigger="every 10ms"
 		hx-select="#gameoflife-board-content"
 		hx-target="#gameoflife-board-content"
 		hx-swap="outerHTML"
 	>
+		<input type="hidden" name="rows" value={ strconv.Itoa(dto.Rows) }/>
+		<input type="hidden" name="columns" value={ strconv.Itoa(dto.Columns) }/>
 		<div
 			id="gameoflife-board-content"
 			class="flex flex-col flex-nowrap"

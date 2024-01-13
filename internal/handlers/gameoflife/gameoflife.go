@@ -15,24 +15,31 @@ import (
 )
 
 func HandleGameOfLife(e echo.Context) error {
-	return utils.Render(e, gameoflifecomponents.GameOfLife())
-}
+	var dto gameoflifemodel.GameOfLifeDTO
 
-func HandleGameOfLifeStart(e echo.Context) error {
-	x := 10
-	y := 10
-	matrix := make([][]int, x)
-	for i := range matrix {
-		matrix[i] = make([]int, y)
-		for j := range matrix[i] {
-			matrix[i][j] = randomize()
+	err := e.Bind(&dto)
+	if err != nil {
+		return err
+	}
+	log.Printf("Game of Life DTO: %+v\n", dto)
+	if dto.Rows == 0 {
+		dto.Rows = 10
+	}
+	if dto.Columns == 0 {
+		dto.Columns = 10
+	}
+
+	for row := 0; row < dto.Rows; row++ {
+		var rowValues []int
+		for col := 0; col < dto.Columns; col++ {
+			rowValues = append(rowValues, randomize())
 		}
+		dto.Matrix = append(dto.Matrix, rowValues)
 	}
+	log.Printf("Matrix: %+v\n", dto.Matrix)
 
-	gameDTO := gameoflifemodel.GameOfLifeDTO{
-		Matrix: matrix,
-	}
-	return utils.Render(e, gameoflifecomponents.GameOfLifeStart(gameDTO))
+	e.Response().Header().Set("HX-Replace-Url", "/gameoflife?rows="+strconv.Itoa(dto.Rows)+"&columns="+strconv.Itoa(dto.Columns))
+	return utils.Render(e, gameoflifecomponents.GameOfLife(dto))
 }
 
 func randomize() int {
@@ -47,14 +54,17 @@ func randomize() int {
 }
 
 func HandleGameOfLifeBoard(c echo.Context) error {
-	numberOfRows := 10
-	numberOfColumns := 10
-	// Assuming a 3x3 matrix for illustration purposes
+	var dto gameoflifemodel.GameOfLifeDTO
+
+	err := c.Bind(&dto)
+	if err != nil {
+		return err
+	}
 	var matrix [][]int
 
-	for row := 0; row < numberOfRows; row++ {
+	for row := 0; row < dto.Rows; row++ {
 		var rowValues []int
-		for col := 0; col < numberOfColumns; col++ {
+		for col := 0; col < dto.Columns; col++ {
 			key := fmt.Sprintf("matrix[%d][%d]", row, col)
 			value := c.FormValue(key)
 			num, err := strconv.Atoi(value)
@@ -67,19 +77,19 @@ func HandleGameOfLifeBoard(c echo.Context) error {
 	}
 	log.Printf("Matrix: %+v\n", matrix)
 
-	var dto gameoflifemodel.GameOfLifeDTO
-
 	dto.Matrix = gameoflifeservice.GameOfLifeService{}.ProcessGameOfLife(cloneMatrix(matrix))
 
 	if areMatricesEqual(matrix, dto.Matrix) {
 		log.Printf("Matrices are equal. Returning 286 status code.")
+		dto.Finished = true
+		dto.Success = isSuccess(dto.Matrix)
 		c.Response().WriteHeader(286)
-		return utils.Render(c, gameoflifecomponents.GameOfLifeStart(dto))
+		return utils.Render(c, gameoflifecomponents.GameOfLife(dto))
 	}
 
 	log.Printf("Processed Game of Life Data: %+v", dto)
 
-	return utils.Render(c, gameoflifecomponents.GameOfLifeStart(dto))
+	return utils.Render(c, gameoflifecomponents.GameOfLife(dto))
 }
 
 func cloneMatrix(matrix [][]int) [][]int {
@@ -117,5 +127,16 @@ func areMatricesEqual(matrix1, matrix2 [][]int) bool {
 		}
 	}
 
+	return true
+}
+
+func isSuccess(matrix [][]int) bool {
+	for row := 0; row < len(matrix); row++ {
+		for col := 0; col < len(matrix[0]); col++ {
+			if matrix[row][col] == 0 {
+				return false
+			}
+		}
+	}
 	return true
 }

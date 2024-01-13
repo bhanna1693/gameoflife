@@ -11,6 +11,7 @@ import "io"
 import "bytes"
 
 import "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
+import "strconv"
 
 func GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
@@ -25,7 +26,23 @@ func GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form id=\"gameoflife-board\" hx-post=\"/gameoflife/start\" hx-trigger=\"every 1ms\" hx-select=\"#gameoflife-board-content\" hx-target=\"#gameoflife-board-content\" hx-swap=\"outerHTML\"><div id=\"gameoflife-board-content\" class=\"flex flex-col flex-nowrap\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form id=\"gameoflife-board\" hx-post=\"/gameoflife/process-board\" hx-trigger=\"every 10ms\" hx-select=\"#gameoflife-board-content\" hx-target=\"#gameoflife-board-content\" hx-swap=\"outerHTML\"><input type=\"hidden\" name=\"rows\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(strconv.Itoa(dto.Rows)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <input type=\"hidden\" name=\"columns\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(strconv.Itoa(dto.Columns)))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div id=\"gameoflife-board-content\" class=\"flex flex-col flex-nowrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

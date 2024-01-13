@@ -16,7 +16,7 @@ func modelName(rowIndex int, colIndex int) string {
 
 templ GameOfLifeCell(value int, rowIndex int, colIndex int) {
 	<div
-		class={ "cell w-8 h-8 text-center", templ.KV("bg-yellow-500", isChecked(value)) }
+		class={ "cell w-8 h-8 text-center border-solid border border-slate-500", templ.KV("bg-slate-500", isChecked(value)) }
 	>
 		<label for={ modelName(rowIndex, colIndex) }></label>
 		<input
