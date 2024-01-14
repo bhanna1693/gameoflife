@@ -14,6 +14,7 @@ import "github.com/bhanna1693/gameoflife/web/templates/nav"
 
 var styles = []string{
 	"/static/styles/tailwind.css",
+	"/static/styles/styles.css",
 }
 
 func Index() templ.Component {

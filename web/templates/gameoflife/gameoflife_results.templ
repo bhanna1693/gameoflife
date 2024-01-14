@@ -1,0 +1,45 @@
+package gameoflife
+
+import "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
+import "github.com/bhanna1693/gameoflife/web/templates/layout"
+import "strconv"
+
+templ GameOfLifeResults(results []*gameoflife.GameOfLifeModel) {
+	@layout.Base("gameoflife-results") {
+		<h1>Game of Life Results</h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th></th>
+					<th>ID</th>
+					<th>Cycles</th>
+					<th>Rows</th>
+					<th>Columns</th>
+					<th>Finished</th>
+					<th>Success</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+				for i, dto := range results {
+					<tr>
+						<td>{ strconv.Itoa(i + 1) }</td>
+						<td>{ strconv.Itoa(dto.Id) }</td>
+						<td>{ strconv.Itoa(dto.Cycles) }</td>
+						<td>{ strconv.Itoa(dto.Rows) }</td>
+						<td>{ strconv.Itoa(dto.Columns ) }</td>
+						<td>{ strconv.FormatBool(dto.Finished) }</td>
+						<td>{ strconv.FormatBool(dto.Success) }</td>
+						<td>
+							// <a href={ templ.URL("/gameoflife/" + strconv.Itoa(dto.Id)) }>View</a>
+						</td>
+						<td>
+							<button hx-delete={ "/gameoflife/" + strconv.Itoa(dto.Id) }>Delete</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+}

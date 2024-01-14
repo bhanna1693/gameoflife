@@ -3,29 +3,30 @@ package gameoflife
 import "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
 import "strconv"
 
-templ GameOfLifeBoard(dto gameoflife.GameOfLifeDTO) {
+templ GameOfLifeBoard(dto gameoflife.GameOfLifeModel) {
 	<form
 		id="gameoflife-board"
-		hx-post="/gameoflife/process-board"
-		hx-trigger="every 10ms"
+		hx-post={ "/gameoflife/process-board/" + strconv.Itoa(dto.Id) }
+		hx-trigger="every 20ms"
 		hx-select="#gameoflife-board-content"
 		hx-target="#gameoflife-board-content"
 		hx-swap="outerHTML"
 	>
-		<input type="hidden" name="rows" value={ strconv.Itoa(dto.Rows) }/>
-		<input type="hidden" name="columns" value={ strconv.Itoa(dto.Columns) }/>
 		<div
 			id="gameoflife-board-content"
 			class="flex flex-col flex-nowrap"
 		>
-			if dto.Matrix != nil {
-				for rowIndex, row := range dto.Matrix {
-					<div class="flex flex-nowrap">
-						for colIndex, column := range row {
-							@GameOfLifeCell(column, rowIndex, colIndex)
-						}
-					</div>
-				}
+			<input type="hidden" name="rows" value={ strconv.Itoa(dto.Rows) }/>
+			<input type="hidden" name="columns" value={ strconv.Itoa(dto.Columns) }/>
+			<input type="hidden" name="success" value={ strconv.FormatBool(dto.Success) }/>
+			<input type="hidden" name="finished" value={ strconv.FormatBool(dto.Finished) }/>
+			<input type="hidden" name="cycles" value={ strconv.Itoa(dto.Cycles) }/>
+			for rowIndex, row := range dto.MatrixData {
+				<div class="flex flex-nowrap">
+					for colIndex, column := range row {
+						@GameOfLifeCell(column, rowIndex, colIndex)
+					}
+				</div>
 			}
 		</div>
 	</form>

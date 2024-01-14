@@ -1,6 +1,7 @@
 package gameoflife
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"math/rand"
@@ -11,104 +12,129 @@ import (
 	gameoflifeservice "github.com/bhanna1693/gameoflife/internal/services/gameoflife"
 	"github.com/bhanna1693/gameoflife/internal/utils"
 	gameoflifecomponents "github.com/bhanna1693/gameoflife/web/templates/gameoflife"
+
+	gameoflifeDatabase "github.com/bhanna1693/gameoflife/internal/database/gameoflife"
 	"github.com/labstack/echo/v4"
 )
 
-func HandleGameOfLife(e echo.Context) error {
-	var dto gameoflifemodel.GameOfLifeDTO
+const (
+	defaultRows    = 10
+	defaultColumns = 10
+)
 
-	err := e.Bind(&dto)
-	if err != nil {
-		return err
+var (
+	randSource = rand.New(rand.NewSource(time.Now().UnixNano()))
+)
+
+func HandleGameOfLife(e echo.Context, db *sql.DB) error {
+	var dto gameoflifemodel.GameOfLifeModel
+	if err := e.Bind(&dto); err != nil {
+		return fmt.Errorf("error binding GameOfLifeModel: %w", err)
 	}
+
+	setDefaultDimensions(&dto)
 	log.Printf("Game of Life DTO: %+v\n", dto)
-	if dto.Rows == 0 {
-		dto.Rows = 10
-	}
-	if dto.Columns == 0 {
-		dto.Columns = 10
-	}
 
-	for row := 0; row < dto.Rows; row++ {
-		var rowValues []int
-		for col := 0; col < dto.Columns; col++ {
-			rowValues = append(rowValues, randomize())
-		}
-		dto.Matrix = append(dto.Matrix, rowValues)
+	dto.MatrixData = initializeMatrix(dto.Rows, dto.Columns)
+	log.Printf("Matrix: %+v\n", dto.MatrixData)
+
+	if err := gameoflifeDatabase.InsertGameOfLifeBoard(db, &dto); err != nil {
+		return fmt.Errorf("error inserting game of life board: %w", err)
 	}
-	log.Printf("Matrix: %+v\n", dto.Matrix)
 
 	e.Response().Header().Set("HX-Replace-Url", "/gameoflife?rows="+strconv.Itoa(dto.Rows)+"&columns="+strconv.Itoa(dto.Columns))
 	return utils.Render(e, gameoflifecomponents.GameOfLife(dto))
 }
 
-func randomize() int {
-	// Create a new source with a specific seed
-	src := rand.NewSource(time.Now().UnixNano())
-
-	// Use the source to create a new local random generator
-	r := rand.New(src)
-
-	// uss the random generator to create a random number
-	return r.Intn(2)
-}
-
-func HandleGameOfLifeBoard(c echo.Context) error {
-	var dto gameoflifemodel.GameOfLifeDTO
+func HandleGameOfLifeBoard(c echo.Context, db *sql.DB) error {
+	var dto gameoflifemodel.GameOfLifeModel
 
 	err := c.Bind(&dto)
 	if err != nil {
 		return err
 	}
-	var matrix [][]int
-
-	for row := 0; row < dto.Rows; row++ {
-		var rowValues []int
-		for col := 0; col < dto.Columns; col++ {
-			key := fmt.Sprintf("matrix[%d][%d]", row, col)
-			value := c.FormValue(key)
-			num, err := strconv.Atoi(value)
-			if err != nil {
-				return err
-			}
-			rowValues = append(rowValues, num)
-		}
-		matrix = append(matrix, rowValues)
+	log.Printf("Game of Life Board DTO %v\n", dto)
+	matrix, err := buildMatrixFromContext(c, dto.Rows, dto.Columns)
+	if err != nil {
+		return fmt.Errorf("error building matrix: %w", err)
 	}
-	log.Printf("Matrix: %+v\n", matrix)
 
-	dto.Matrix = gameoflifeservice.GameOfLifeService{}.ProcessGameOfLife(cloneMatrix(matrix))
+	dto.MatrixData = gameoflifeservice.GameOfLifeService{}.ProcessGameOfLife(cloneMatrix(matrix))
+	dto.Cycles++
 
-	if areMatricesEqual(matrix, dto.Matrix) {
+	if areMatricesEqual(matrix, dto.MatrixData) {
 		log.Printf("Matrices are equal. Returning 286 status code.")
 		dto.Finished = true
-		dto.Success = isSuccess(dto.Matrix)
+		err = dto.EvaluateMatrix()
+		if err != nil {
+			return err
+		}
+
+		err = gameoflifeDatabase.UpdateGameOfLifeBoard(db, &dto)
+		if err != nil {
+			return err
+		}
 		c.Response().WriteHeader(286)
 		return utils.Render(c, gameoflifecomponents.GameOfLife(dto))
 	}
 
 	log.Printf("Processed Game of Life Data: %+v", dto)
 
+	err = gameoflifeDatabase.UpdateGameOfLifeBoard(db, &dto)
+	if err != nil {
+		return err
+	}
+
 	return utils.Render(c, gameoflifecomponents.GameOfLife(dto))
 }
 
+func setDefaultDimensions(dto *gameoflifemodel.GameOfLifeModel) {
+	if dto.Rows == 0 {
+		dto.Rows = defaultRows
+	}
+	if dto.Columns == 0 {
+		dto.Columns = defaultColumns
+	}
+}
+
+func buildMatrixFromContext(c echo.Context, rows, columns int) ([][]int, error) {
+	var matrix [][]int
+	for row := 0; row < rows; row++ {
+		var rowValues []int
+		for col := 0; col < columns; col++ {
+			key := fmt.Sprintf("matrix[%d][%d]", row, col)
+			value, err := strconv.Atoi(c.FormValue(key))
+			if err != nil {
+				return nil, fmt.Errorf("invalid matrix value at [%d][%d]: %w", row, col, err)
+			}
+			rowValues = append(rowValues, value)
+		}
+		matrix = append(matrix, rowValues)
+	}
+	return matrix, nil
+}
+
+func initializeMatrix(rows, cols int) [][]int {
+	matrix := make([][]int, rows)
+	for i := range matrix {
+		matrix[i] = make([]int, cols)
+		for j := range matrix[i] {
+			matrix[i][j] = randSource.Intn(2)
+		}
+	}
+	return matrix
+}
+
 func cloneMatrix(matrix [][]int) [][]int {
-	// Ensure the original matrix is not nil or empty
 	if len(matrix) == 0 || len(matrix[0]) == 0 {
 		return nil
 	}
 
-	// Get the dimensions of the matrix
-	rows := len(matrix)
-	cols := len(matrix[0])
-
-	// Create a new matrix with the same dimensions
-	clonedMatrix := make([][]int, rows)
-	for i := range clonedMatrix {
-		clonedMatrix[i] = make([]int, cols)
-		copy(clonedMatrix[i], matrix[i])
+	clonedMatrix := make([][]int, len(matrix))
+	for i, row := range matrix {
+		clonedMatrix[i] = make([]int, len(row))
+		copy(clonedMatrix[i], row)
 	}
-
 	return clonedMatrix
 }
 
@@ -130,13 +156,27 @@ func areMatricesEqual(matrix1, matrix2 [][]int) bool {
 	return true
 }
 
-func isSuccess(matrix [][]int) bool {
-	for row := 0; row < len(matrix); row++ {
-		for col := 0; col < len(matrix[0]); col++ {
-			if matrix[row][col] == 0 {
-				return false
-			}
-		}
+func HandleGameOfLifeResults(e echo.Context, db *sql.DB) error {
+	dtos, err := gameoflifeDatabase.SelectAllGameOfLifeResults(db)
+	if err != nil {
+		log.Println("Error getting all game of life results")
+		return err
 	}
-	return true
+
+	return utils.Render(e, gameoflifecomponents.GameOfLifeResults(dtos))
+}
+
+func HandleGameOfLifeDelete(e echo.Context, db *sql.DB) error {
+	id, err := strconv.Atoi(e.Param("id"))
+	if err != nil {
+		log.Println("Error converting id to int")
+		return err
+	}
+	log.Printf("Deleting Game of Life Board with id: %v", id)
+	err = gameoflifeDatabase.DeleteGameOfLifeBoard(db, id)
+	if err != nil {
+		log.Println("Error deleting game of life board")
+		return err
+	}
+	return nil
 }

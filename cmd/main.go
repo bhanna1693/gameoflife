@@ -39,13 +39,20 @@ func main() {
 		return home.HandleHome(e)
 	})
 	e.GET("/gameoflife", func(e echo.Context) error {
-		return gameoflife.HandleGameOfLife(e)
+		return gameoflife.HandleGameOfLife(e, db)
 	})
 	e.POST("/gameoflife", func(e echo.Context) error {
-		return gameoflife.HandleGameOfLife(e)
+		return gameoflife.HandleGameOfLife(e, db)
 	})
-	e.POST("/gameoflife/process-board", func(e echo.Context) error {
-		return gameoflife.HandleGameOfLifeBoard(e)
+	e.POST("/gameoflife/process-board/:id", func(e echo.Context) error {
+		return gameoflife.HandleGameOfLifeBoard(e, db)
 	})
+	e.GET("/gameoflife/results", func(e echo.Context) error {
+		return gameoflife.HandleGameOfLifeResults(e, db)
+	})
+	e.DELETE("/gameoflife/:id", func(e echo.Context) error {
+		return gameoflife.HandleGameOfLifeDelete(e, db)
+	})
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
