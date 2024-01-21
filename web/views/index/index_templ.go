@@ -10,7 +10,7 @@ import "context"
 import "io"
 import "bytes"
 
-import "github.com/bhanna1693/gameoflife/web/templates/nav"
+import "github.com/bhanna1693/gameoflife/web/views/nav"
 
 var styles = []string{
 	"/static/styles/tailwind.css",

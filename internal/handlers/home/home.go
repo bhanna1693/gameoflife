@@ -2,7 +2,7 @@ package home
 
 import (
 	"github.com/bhanna1693/gameoflife/internal/utils"
-	"github.com/bhanna1693/gameoflife/web/templates/home"
+	"github.com/bhanna1693/gameoflife/web/views/home"
 	"github.com/labstack/echo/v4"
 )
 

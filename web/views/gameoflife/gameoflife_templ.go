@@ -10,7 +10,7 @@ import "context"
 import "io"
 import "bytes"
 
-import "github.com/bhanna1693/gameoflife/web/templates/layout"
+import "github.com/bhanna1693/gameoflife/web/views/layout"
 import "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
 import "strconv"
 

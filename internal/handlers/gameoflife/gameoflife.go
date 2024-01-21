@@ -11,7 +11,7 @@ import (
 	gameoflifemodel "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
 	gameoflifeservice "github.com/bhanna1693/gameoflife/internal/services/gameoflife"
 	"github.com/bhanna1693/gameoflife/internal/utils"
-	gameoflifecomponents "github.com/bhanna1693/gameoflife/web/templates/gameoflife"
+	gameoflifecomponents "github.com/bhanna1693/gameoflife/web/views/gameoflife"
 
 	gameoflifeDatabase "github.com/bhanna1693/gameoflife/internal/database/gameoflife"
 	"github.com/labstack/echo/v4"

@@ -11,7 +11,7 @@ import "io"
 import "bytes"
 
 import "github.com/bhanna1693/gameoflife/internal/models/gameoflife"
-import "github.com/bhanna1693/gameoflife/web/templates/layout"
+import "github.com/bhanna1693/gameoflife/web/views/layout"
 import "strconv"
 
 func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
@@ -108,7 +108,7 @@ func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i + 1))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/gameoflife/gameoflife_results.templ`, Line: 26, Col: 31}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/gameoflife/gameoflife_results.templ`, Line: 26, Col: 31}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -121,7 +121,7 @@ func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(dto.Id))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/gameoflife/gameoflife_results.templ`, Line: 27, Col: 32}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/gameoflife/gameoflife_results.templ`, Line: 27, Col: 32}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -134,7 +134,7 @@ func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(dto.Cycles))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/gameoflife/gameoflife_results.templ`, Line: 28, Col: 36}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/gameoflife/gameoflife_results.templ`, Line: 28, Col: 36}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -147,7 +147,7 @@ func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(dto.Rows))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/gameoflife/gameoflife_results.templ`, Line: 29, Col: 34}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/gameoflife/gameoflife_results.templ`, Line: 29, Col: 34}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -160,7 +160,7 @@ func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(dto.Columns))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/gameoflife/gameoflife_results.templ`, Line: 30, Col: 38}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/gameoflife/gameoflife_results.templ`, Line: 30, Col: 38}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -173,7 +173,7 @@ func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(dto.Finished))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/gameoflife/gameoflife_results.templ`, Line: 31, Col: 44}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/gameoflife/gameoflife_results.templ`, Line: 31, Col: 44}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
@@ -186,7 +186,7 @@ func GameOfLifeResults(results []*gameoflife.GameOfLifeModel) templ.Component {
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(dto.Success))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/templates/gameoflife/gameoflife_results.templ`, Line: 32, Col: 43}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `web/views/gameoflife/gameoflife_results.templ`, Line: 32, Col: 43}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {

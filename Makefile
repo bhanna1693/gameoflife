@@ -1,3 +1,7 @@
+.PHONY: run air-local build-app build-templ build-tailwind fetch-tailwindcss
+
+TAILWIND_RELEASE = tailwindcss-macos-x64
+
 run:
 	air
 
@@ -8,17 +12,15 @@ air-local:
 
 build-app:
 	go build -o ./tmp/main ./cmd
-
+	
 build-templ:
 	templ generate
 
-.PHONY: build-tailwind
-build-tailwind: tailwindcss
-	./tailwindcss -i tailwind.css -o web/static/styles/tailwind.css --minify
+build-tailwind: tmp/tailwindcss
+	./tmp/tailwindcss -i ./web/static/styles/tailwind-input.css -o web/static/styles/tailwind-output.css --minify
 
-# see for details -> https://tailwindcss.com/blog/standalone-cli
-TAILWIND_RELEASE = tailwindcss-macos-x64
 fetch-tailwindcss:
+	mkdir tmp
 	curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/$(TAILWIND_RELEASE)
 	chmod +x $(TAILWIND_RELEASE)
-	mv $(TAILWIND_RELEASE) tailwindcss
+	mv $(TAILWIND_RELEASE) tmp/tailwindcss
