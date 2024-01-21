@@ -1,5 +1,3 @@
-components/**/*_templ.go
-.env
 tmp
-tailwindcss
-handle_edge_case.md
+# *_templ.go
+.env
