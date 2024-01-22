@@ -4,13 +4,27 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 
 	gameoflifedb "github.com/bhanna1693/gameoflife/internal/database/gameoflife"
 	"github.com/bhanna1693/gameoflife/internal/handlers/gameoflife"
 	"github.com/bhanna1693/gameoflife/internal/handlers/home"
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 )
+
+type CustomValidator struct {
+	validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i interface{}) error {
+	if err := cv.validator.Struct(i); err != nil {
+		// Optionally, you could return the error to give each route more control over the status code
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return nil
+}
 
 func main() {
 	// Open a database connection
@@ -34,6 +48,7 @@ func main() {
 	}
 
 	e := echo.New()
+	e.Validator = &CustomValidator{validator: validator.New()}
 	e.Static("/static", "web/static")
 	e.GET("/", func(e echo.Context) error {
 		return home.HandleHome(e)

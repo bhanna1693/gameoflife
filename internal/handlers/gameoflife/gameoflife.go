@@ -33,6 +33,12 @@ func HandleGameOfLife(e echo.Context, db *sql.DB) error {
 	}
 
 	setDefaultDimensions(&dto)
+
+	if err := e.Validate(&dto); err != nil {
+		log.Printf("Error validating GameOfLifeModel: %v\n", err)
+		return fmt.Errorf("error validating GameOfLifeModel: %w", err)
+	}
+
 	log.Printf("Game of Life DTO: %+v\n", dto)
 
 	dto.MatrixData = initializeMatrix(dto.Rows, dto.Columns)
@@ -49,10 +55,14 @@ func HandleGameOfLife(e echo.Context, db *sql.DB) error {
 func HandleGameOfLifeBoard(c echo.Context, db *sql.DB) error {
 	var dto gameoflifemodel.GameOfLifeModel
 
-	err := c.Bind(&dto)
-	if err != nil {
-		return err
+	if err := c.Bind(&dto); err != nil {
+		return fmt.Errorf("error binding GameOfLifeModel: %w", err)
 	}
+
+	if err := c.Validate(&dto); err != nil {
+		return fmt.Errorf("error validating GameOfLifeModel: %w", err)
+	}
+
 	log.Printf("Game of Life Board DTO %v\n", dto)
 	matrix, err := buildMatrixFromContext(c, dto.Rows, dto.Columns)
 	if err != nil {

@@ -11,8 +11,8 @@ type GameOfLifeModel struct {
 	Success    bool `form:"success"`
 	Finished   bool `form:"finished"`
 	Cycles     int  `form:"cycles"`
-	Rows       int  `form:"rows"`
-	Columns    int  `form:"columns"`
+	Rows       int  `form:"rows" validate:"required,min=1,max=20"`
+	Columns    int  `form:"columns" validate:"required,min=1,max=20"`
 	Matrix     string
 	MatrixData [][]int
 }
