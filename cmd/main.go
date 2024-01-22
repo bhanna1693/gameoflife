@@ -28,7 +28,7 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 
 func main() {
 	// Open a database connection
-	db, err := sql.Open("sqlite3", "your-database-file.db")
+	db, err := sql.Open("sqlite3", "gameoflife-sqlite.db")
 	if err != nil {
 		log.Fatal(err)
 	}
