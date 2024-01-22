@@ -1,4 +1,4 @@
-FROM alpine:latest  
+FROM golang:1.21
 
 # Set the working directory inside the container
 WORKDIR /app
