@@ -1,11 +1,12 @@
 package layout
 
 import "github.com/bhanna1693/gameoflife/web/views/index"
+import "strings"
 
-templ Base(pageId string) {
-	@index.Index() {
+templ Base(title string) {
+	@index.Index(title) {
 		<div
-			id={ pageId + "-page" }
+			id={ strings.ReplaceAll(title, " ", "-") + "-page" }
 			class="container mx-auto px-4"
 		>
 			{ children... }

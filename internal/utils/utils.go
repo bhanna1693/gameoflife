@@ -5,13 +5,11 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Ternary(condition bool, trueValue, falseValue interface{}) interface{} {
-	if condition {
-		return trueValue
-	}
-	return falseValue
-}
-
 func Render(e echo.Context, component templ.Component) error {
 	return component.Render(e.Request().Context(), e.Response())
+}
+
+type Page struct {
+	Title string
+	Data  interface{}
 }

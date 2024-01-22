@@ -7,6 +7,12 @@ import (
 )
 
 func HandleHome(e echo.Context) error {
-	name := utils.Ternary(e.QueryParam("name") == "", "user", e.QueryParam("name")).(string)
+	var name string
+	if e.QueryParam("name") == "" {
+		name = "user"
+	} else {
+		name = e.QueryParam("name")
+	}
+
 	return utils.Render(e, home.Home(name))
 }
