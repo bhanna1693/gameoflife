@@ -3,7 +3,8 @@ FROM golang:1.21
 # Set the working directory inside the container
 WORKDIR /app
 
-RUN apk --no-cache add ca-certificates
+# Copy the go mod and sum files
+COPY go.mod go.sum ./
 
 # Copy the binary file from the build context to the container
 COPY ./main .
