@@ -2,3 +2,4 @@ tmp
 *_templ.go
 .env
 tailwind-output.css
+*.db
